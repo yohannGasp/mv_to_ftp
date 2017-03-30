@@ -28,7 +28,7 @@ mask      = ''
 #===================================================================================================
 try:
 
-	conf = open('sett.conf','r')
+	conf = open('/usr/local/jobs/1/sett.conf','r')
 	param = conf.read()
 	js_param = json.loads(param)
 
@@ -45,15 +45,8 @@ try:
 	# print(SLEEP)
 	# print(LOG)
 	
-except ValueError:
-	print("#==================================")
-	print("#  error json")
-	print("#==================================")
-
-except FileNotFoundError :
-	print("#==================================")
-	print("# not file sett.conf")
-	print("#==================================")
+except Exception as e:
+	logs("error: {0}".format(e))
 
 #===================================================================================================
 # function find_files 
@@ -64,7 +57,7 @@ def find_files():
 
 	try:
 
-		tree=os.walk(PATH_IN)		
+		tree=os.walk(PATH_IN)
 		for current_dir, dirs, files in tree:
 			for file in files:
 				path = os.path.join(current_dir,file)
@@ -81,7 +74,7 @@ def find_files():
 		logs("error: {0}".format(e))
 
 	if fl_error == False:
-		tree=os.walk(PATH_IN)			
+		tree=os.walk(PATH_IN)
 		for current_dir, dirs, files in tree:
 			for dir_ in dirs:
 				shutil.rmtree(os.path.join(current_dir,dir_))
@@ -106,5 +99,5 @@ if not os.path.exists(FLAG):
 	logs('start')
 	f = open(FLAG, 'w')  # lock
 	find_files()
-	os.remove(FLAG)	     # unlock
+	os.remove(FLAG)      # unlock
 	logs('finish')
